@@ -18,7 +18,7 @@ int32_t main()
                 ind = j ;
             }
         }
-        ans[i + 1] = ind + 1;
+        ans[i + 1] = (ind>0)?ind+1:-1;
         if (ind != -1) block[ind] -= process[i];
     }
     for (int i = 1; i <= m; i++) cout << ans[i] << " ";
