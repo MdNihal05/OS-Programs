@@ -1,54 +1,54 @@
 #include<bits/stdc++.h>
+#define int long long
+#define all(x) x.begin(),x.end()
 using namespace std;
-class round_robin{
-public:
-	int arrival_time,brust_time,process_no;
-};
-bool cmp(round_robin &a,round_robin &b){
-	if(a.arrival_time==b.arrival_time) return a.process_no<b.process_no;
-	return a.arrival_time<b.arrival_time;
-}
-int main()
+int32_t main()
 {
-	cout<<"enter the no of process"<<endl;
-	int no_of_process,time_frame; cin>>no_of_process>>time_frame;
-	vector<round_robin>process(no_of_process),gant_chart,print;
-	cout<<"enter arrival times and burst time"<<endl;
-	for(int i=0;i<no_of_process;++i){
-		cin>>process[i].arrival_time>>process[i].brust_time;
-		process[i].process_no=i;
-	}
-	print=process;
-	sort(process.begin(),process.end(),cmp);
-	deque<round_robin>ready_queue;
-	int time=0;
-	ready_queue.push_back(process[0]);
-	vector<int>vis(no_of_process+1),completion_time(no_of_process+1);
-	while(!ready_queue.empty()){
-		int mn=min(ready_queue.front().brust_time,time_frame);	
-		time+=mn;
-		ready_queue.front().brust_time-=mn;
-		gant_chart.push_back(ready_queue.front());
-		process[ready_queue.front().process_no].brust_time-=mn;
-		vis[ready_queue.front().process_no]=1;
-		for(auto &i:process){
-			if(i.arrival_time<=time and i.brust_time>0 and vis[i.process_no]==0){
-				ready_queue.push_back(i);
-			}	
-		}
-		if(ready_queue.front().brust_time==0){
-			completion_time[ready_queue.front().process_no]=time;
-		}
-		if(ready_queue.front().brust_time>0) ready_queue.push_back(ready_queue.front());
-		ready_queue.pop_front();
-	}
-	for(auto &i:gant_chart){
-		cout<<i.process_no+1<<" ";
-	}
-	cout<<endl;
-	for(auto &i:print){
-		cout<<i.process_no<<" "<<i.arrival_time<<" "<<i.brust_time<<" "<<completion_time[i.process_no]<<endl;
-	}
-	
-	
+    int n, time_quantunm = 1; cin >> n >> time_quantunm;
+    vector<pair<int, int>>process(n);
+    vector<int>burst(n);
+    for (int i = 0; i < n; i++) {
+        cin >> process[i].first;
+        cin >> burst[i];
+        process[i].second = i;
+    }
+    int time = 0;
+    sort(all(process));
+    for (auto &i : process) {
+        cout << i.first << " " << i.second << endl;
+    }
+
+    vector<int> ans, vis(n), completion(n);
+    deque<pair<int, int>>rq;
+    int count = 0;
+    rq.push_back(process[0]);
+    vis[process[0].second] = 1;
+
+    while (count < n) {
+        auto ex = rq.front();
+        int req = min(time_quantunm, burst[ex.second]);
+        time += req;
+        burst[ex.second] -= req;
+        if (burst[ex.second] == 0) {
+            count++;
+            completion[ex.second] = time;
+        }
+        ans.push_back(ex.second + 1);
+        sort(all(process));
+        for (int i = 0; i < n; i++) {
+            if (vis[process[i].second] == 0 and process[i].second != ex.second and process[i].first <= time and burst[process[i].second] > 0) {
+                vis[process[i].second] = 1;
+                rq.push_back(process[i]);
+            }
+        }
+        if (burst[ex.second] > 0) {
+            rq.push_back(ex);
+        }
+        rq.pop_front();
+    }
+    for (auto &i : ans) cout << i << " " ;
+    cout << endl;
+    for (int i = 0; i < n; i++) {
+        cout << completion[i] << " ";
+    }
 }
