@@ -3,16 +3,6 @@
 #define all(x) x.begin(),x.end()
 using namespace std;
 
-bool find(deque<int>q, int x) {
-    while (q.size()) {
-        if (q.back() == x) {
-            return 1;
-        }
-        q.pop_back();
-    }
-    return 0;
-}
-
 int32_t main()
 {
     int n, frame; cin >> n >> frame;
@@ -24,7 +14,7 @@ int32_t main()
     deque<int>q;
     int miss = 0, hit = 0;
     for (int i = 0; i < n; i++) {
-        if (find(q, process[i])) {
+        if (find(all(q), process[i]) != q.end()) {
             hit++;
         } else {
             q.push_back(process[i]);
