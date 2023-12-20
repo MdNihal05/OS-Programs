@@ -25,8 +25,8 @@ int32_t main()
     cout << endl;
     cout << A << " " << B << " " << C << endl;
     cout << endl;
-    int start = 0, end = 0;
-    while (n--) {
+    int start = 0, end = 0, count = n;
+    while (count--) {
         do {
             if (ma[start] == 0 and mb[start] == 0 and mc[start] == 0) {
             }
