@@ -30,7 +30,7 @@ int32_t main()
                 for (auto &i : m) {
                     if (i.second > del.second) del = i;
                 }
-                cout << del.first << " is replaced with" << process[i] << endl;
+                cout << del.first << " is replaced with " << process[i] << endl;
                 s.erase(del.first);
                 s.insert(process[i]);
             }
